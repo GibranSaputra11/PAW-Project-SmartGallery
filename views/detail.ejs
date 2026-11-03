@@ -1,0 +1,91 @@
+<%- include('partials/head', { judul: judul }) %>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-xl font-black tracking-tight text-indigo-600 flex items-center gap-2">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <%= namaAplikasi %>
+      </a>
+      <a href="/" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors flex items-center gap-1">
+        &larr; Kembali ke Pricelist
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200">
+      
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">
+          <%= item.kategori %>
+        </span>
+        <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl">
+          Durasi: <%= item.durasi %>
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight"><%= item.nama %></h1>
+      <p class="mt-4 text-lg text-slate-600 leading-relaxed"><%= item.deskripsi %></p>
+
+      <div class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Estimasi Biaya Paket</p>
+          <p class="text-3xl sm:text-4xl font-black text-slate-900 mt-1">
+            Rp <%= item.harga.toLocaleString('id-ID') %>
+          </p>
+        </div>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20untuk%20memesan%20<%= encodeURIComponent(item.nama) %>" target="_blank" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-colors text-center shadow-sm">
+          Pesan Paket Ini via WhatsApp
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 mt-10 pt-10 border-t border-slate-100">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Fasilitas Termasuk:</h3>
+          <ul class="space-y-3">
+            <% item.cakupan.forEach(function(c) { %>
+              <li class="flex items-start gap-3 text-slate-700 text-sm">
+                <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span><%= c %></span>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <% if (item.tidakTermasuk && item.tidakTermasuk.length > 0) { %>
+          <div>
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Tidak Termasuk:</h3>
+            <ul class="space-y-3">
+              <% item.tidakTermasuk.forEach(function(nc) { %>
+                <li class="flex items-start gap-3 text-slate-400 text-sm">
+                  <svg class="w-5 h-5 text-slate-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span><%= nc %></span>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
+        <% } %>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-10 mt-auto">
+    <div class="max-w-4xl mx-auto px-6 text-center text-sm text-slate-500">
+      <p>&copy; <%= new Date().getFullYear() %> <%= namaAplikasi %> — Professional Photography & Videography Services. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<%- include('partials/head', { judul: judul }) %>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-xl font-black tracking-tight text-indigo-600 flex items-center gap-2">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <%= namaAplikasi %>
+      </a>
+      <nav class="flex items-center gap-6 text-sm font-semibold">
+        <a href="/" class="text-indigo-600 hover:text-indigo-800 transition-colors">Pricelist</a>
+        <a href="/api/paket" class="text-slate-600 hover:text-indigo-600 transition-colors">API Paket</a>
+        <a href="/api/status" class="text-slate-600 hover:text-indigo-600 transition-colors">API Status</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pb-24">
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 pt-16 pb-12 text-center">
+      <span class="inline-block bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
+        Professional Photography & Videography Services
+      </span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900">
+        Pricelist & Paket Layanan Dokumentasi
+      </h1>
+      <p class="mt-6 text-lg max-w-2xl mx-auto text-slate-600 leading-relaxed">
+        Pilih paket dokumentasi terbaik untuk momen spesial Anda. Transparan, profesional, dan siap mengabadikan setiap detik berharga.
+      </p>
+    </section>
+
+    <!-- Search & Filter Bar -->
+    <section class="max-w-6xl mx-auto px-6 pb-10">
+      <form action="/" method="GET" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-4 items-center">
+        <!-- Search Input -->
+        <div class="flex-1 w-full">
+          <label for="search" class="sr-only">Cari paket</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </span>
+            <input
+              type="text"
+              name="search"
+              id="search"
+              value="<%= searchKeyword %>"
+              placeholder="Cari nama paket, deskripsi, atau kategori..."
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all"
+            >
+          </div>
+        </div>
+
+        <!-- Category Select -->
+        <div class="w-full sm:w-56">
+          <label for="kategori" class="sr-only">Filter kategori</label>
+          <select
+            name="kategori"
+            id="kategori"
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all appearance-none bg-no-repeat bg-right pr-10"
+            style='background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27 stroke=%27%23475569%27%3E%3Cpath stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M19 9l-7 7-7-7%27%3E%3C/path%3E%3C/svg%3E"); background-position: right 0.85rem center; background-size: 1.25rem;'
+          >
+            <% categories.forEach(function(cat) { %>
+              <option value="<%= cat %>" <%= cat === selectedCategory ? 'selected' : '' %>><%= cat %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-all shrink-0"
+        >
+          Filter Pricelist
+        </button>
+
+        <% if (selectedCategory !== 'Semua' || searchKeyword) { %>
+          <a
+            href="/"
+            class="text-sm font-semibold text-slate-500 hover:text-slate-800 px-4 py-2 transition-colors shrink-0"
+          >
+            Reset Filter
+          </a>
+        <% } %>
+      </form>
+
+      <!-- Hasil Info -->
+      <div class="mt-4 flex items-center justify-between text-sm text-slate-500 px-2">
+        <p>Menampilkan <strong class="text-slate-800"><%= paket.length %></strong> paket layanan</p>
+        <% if (selectedCategory !== 'Semua' || searchKeyword) { %>
+          <p>Filter aktif: <span class="font-medium text-indigo-600"><%= selectedCategory %></span> <%= searchKeyword ? `("${searchKeyword}")` : '' %></p>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- Pricelist Cards Grid -->
+    <section class="max-w-6xl mx-auto px-6">
+      <% if (paket.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% paket.forEach(function(item) { %>
+            <div class="bg-white rounded-3xl p-8 shadow-sm border <%= item.populer ? 'border-indigo-600 ring-2 ring-indigo-600/20 relative' : 'border-slate-200' %> flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+              
+              <% if (item.populer) { %>
+                <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-extrabold tracking-wider uppercase px-4 py-1.5 rounded-full shadow-sm">
+                  Paling Populer
+                </span>
+              <% } %>
+
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg uppercase tracking-wider"><%= item.kategori %></span>
+                  <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg"><%= item.durasi %></span>
+                </div>
+
+                <h3 class="text-2xl font-black text-slate-900 tracking-tight"><%= item.nama %></h3>
+                <p class="mt-3 text-slate-600 text-sm leading-relaxed"><%= item.deskripsi %></p>
+
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                  <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mulai dari</p>
+                  <p class="text-3xl font-black text-slate-900 mt-1">
+                    Rp <%= item.harga.toLocaleString('id-ID') %>
+                  </p>
+                </div>
+
+                <div class="mt-6 space-y-3">
+                  <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">Fasilitas Termasuk:</p>
+                  <ul class="space-y-2.5">
+                    <% item.cakupan.forEach(function(c) { %>
+                      <li class="flex items-start gap-3 text-sm text-slate-700">
+                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span><%= c %></span>
+                      </li>
+                    <% }); %>
+                  </ul>
+                </div>
+
+                <% if (item.tidakTermasuk && item.tidakTermasuk.length > 0) { %>
+                  <div class="mt-5 pt-4 border-t border-slate-100/60">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tidak Termasuk:</p>
+                    <ul class="space-y-1.5">
+                      <% item.tidakTermasuk.forEach(function(nc) { %>
+                        <li class="flex items-center gap-2.5 text-xs text-slate-400">
+                          <svg class="w-4 h-4 text-slate-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                          <span><%= nc %></span>
+                        </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                <% } %>
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-4">
+                <a href="/paket/<%= item.id %>" class="w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl transition-colors text-sm">
+                  Detail Paket
+                </a>
+                <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20<%= encodeURIComponent(item.nama) %>" target="_blank" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm shadow-sm">
+                  Pesan via WA
+                </a>
+              </div>
+
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-20 bg-white rounded-3xl border border-slate-200">
+          <svg class="w-16 h-16 mx-auto text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h3 class="text-xl font-bold text-slate-800">Tidak ada paket ditemukan</h3>
+          <p class="mt-2 text-slate-500 text-sm">Coba ubah kata kunci pencarian atau pilih kategori lain.</p>
+          <a href="/" class="inline-block mt-6 bg-indigo-50 text-indigo-600 font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-indigo-100 transition-colors">
+            Reset Semua Filter
+          </a>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-10 mt-auto">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm text-slate-500">
+      <p>&copy; <%= new Date().getFullYear() %> <%= namaAplikasi %> — Professional Photography & Videography Services. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
