@@ -1,0 +1,82 @@
+<%- include('../partials/head', { title: 'Edit FAQ - Smart Gallery' }) %>
+
+<body class="bg-street text-paper min-h-screen flex flex-col selection:bg-accent selection:text-street">
+
+  <header class="sticky top-0 z-40 bg-street/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/admin/faqs" class="flex items-center gap-2 group">
+        <svg class="w-8 h-8 text-accent group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <span class="font-display text-2xl tracking-wider text-paper">SMART</span>
+      </a>
+      <span class="font-script text-accent text-xl -ml-6 -mt-2">Gallery</span>
+
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-muted">Admin: <strong class="text-paper"><%= session.username %></strong></span>
+        <a href="/admin/faqs" class="text-muted hover:text-paper transition-colors text-sm">Kembali</a>
+        <form action="/auth/logout" method="POST" class="inline">
+          <button type="submit" class="text-red-400 hover:text-red-300 text-sm font-medium">Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-2xl w-full mx-auto px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-display uppercase tracking-wide text-paper">Edit FAQ</h1>
+      <p class="text-muted text-sm mt-1">Perbarui pertanyaan dan jawaban untuk AI Chatbot</p>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm flex items-center gap-2">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <span><%= error %></span>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/admin/faqs/<%= faq.id %>/update" class="bg-cardbg rounded-2xl p-8 border border-slate-800 space-y-6">
+      <div>
+        <label for="question" class="block text-sm font-medium text-paper mb-2">Pertanyaan *</label>
+        <textarea id="question" name="question" required rows="3" maxlength="500" class="w-full bg-street border border-slate-800 rounded-xl px-4 py-3 text-paper placeholder-muted focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all resize-none"><%= faq.question %></textarea>
+        <p class="text-xs text-muted mt-1">Gunakan kata kunci yang kemungkinan diketik klien (mis: harga, paket, durasi, dll)</p>
+      </div>
+
+      <div>
+        <label for="answer" class="block text-sm font-medium text-paper mb-2">Jawaban *</label>
+        <textarea id="answer" name="answer" required rows="5" maxlength="2000" class="w-full bg-street border border-slate-800 rounded-xl px-4 py-3 text-paper placeholder-muted focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all resize-none"><%= faq.answer %></textarea>
+        <p class="text-xs text-muted mt-1">Jawaban akan ditampilkan apa adanya oleh chatbot. Format dengan rapi.</p>
+      </div>
+
+      <div>
+        <label for="category" class="block text-sm font-medium text-paper mb-2">Kategori</label>
+        <select id="category" name="category" class="w-full bg-street border border-slate-800 rounded-xl px-4 py-3 text-paper focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all appearance-none">
+          <option value="Umum" <%= faq.category === 'Umum' ? 'selected' : '' %>>📋 Umum</option>
+          <option value="Harga" <%= faq.category === 'Harga' ? 'selected' : '' %>>💰 Harga & Paket</option>
+          <option value="Layanan" <%= faq.category === 'Layanan' ? 'selected' : '' %>>📸 Layanan & Produk</option>
+          <option value="Proses" <%= faq.category === 'Proses' ? 'selected' : '' %>>⚙️ Proses & Alur</option>
+          <option value="Teknis" <%= faq.category === 'Teknis' ? 'selected' : '' %>>🔧 Teknis & Lainnya</option>
+        </select>
+        <p class="text-xs text-muted mt-1">Kategori membantu mengorganisir FAQ di dashboard.</p>
+      </div>
+
+      <div class="bg-accent/10 border border-accent/20 rounded-xl p-4">
+        <p class="text-sm text-accent/90 flex items-center gap-2">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <strong>AI Data Source:</strong> Data FAQ ini dibaca langsung oleh AI Chatbot. Pastikan jawaban akurat dan up-to-date.
+        </p>
+      </div>
+
+      <div class="flex gap-4 pt-4 border-t border-slate-800">
+        <button type="submit" class="flex-1 bg-accent hover:bg-accent/90 text-street font-bold py-3 px-6 rounded-xl transition-all shadow-sm">
+          Simpan Perubahan
+        </button>
+        <a href="/admin/faqs" class="flex-1 bg-street hover:bg-slate-800 text-paper font-semibold py-3 px-6 rounded-xl text-center border border-slate-800 transition-colors">
+          Batal
+        </a>
+      </div>
+    </form>
+  </main>
+
+<%- include('../partials/footer') %>

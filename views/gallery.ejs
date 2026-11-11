@@ -1,0 +1,65 @@
+<%- include('partials/head', { title: title }) %>
+
+<body class="bg-street text-paper min-h-screen flex flex-col selection:bg-accent selection:text-street">
+
+  <header class="sticky top-0 z-40 bg-street/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 group">
+        <svg class="w-8 h-8 text-accent group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <span class="font-display text-2xl tracking-wider text-paper">SMART</span>
+      </a>
+      <span class="font-script text-accent text-xl -ml-6 -mt-2">Gallery</span>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="/" class="text-muted hover:text-paper transition-colors">Pricelist</a>
+        <a href="/gallery" class="text-accent hover:text-accent/80 transition-colors">Portofolio</a>
+        <% if (session && session.userId) { %>
+          <a href="/admin/dashboard" class="bg-accent/10 text-accent px-4 py-2 rounded-xl border border-accent/20 hover:bg-accent/20 transition-all font-semibold">Dashboard Admin</a>
+          <form action="/auth/logout" method="POST" class="inline">
+            <button type="submit" class="text-muted hover:text-red-400 transition-colors">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/login" class="text-muted hover:text-paper transition-colors">Admin Login</a>
+        <% } %>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl sm:text-5xl font-display uppercase tracking-wide text-paper">Portofolio <span class="text-accent font-script normal-case text-3xl sm:text-4xl">Gallery</span></h1>
+      <p class="text-muted text-sm mt-2">Koleksi dokumentasi profesional dari berbagai momen spesial.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% galleries.forEach(function(gallery) { %>
+        <article class="group relative bg-cardbg rounded-2xl overflow-hidden border border-slate-800 aspect-[4/3]">
+          <img src="<%= gallery.imageUrl %>" alt="<%= gallery.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-gradient-to-t from-street/90 via-street/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
+            <span class="text-xs font-bold text-accent uppercase tracking-wider mb-1"><%= gallery.category %></span>
+            <h3 class="text-xl font-bold text-paper"><%= gallery.title %></h3>
+            <p class="text-sm text-muted/80 mt-1"><%= gallery.eventDate ? new Date(gallery.eventDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '' %></p>
+            <% if (gallery.videoUrl) { %>
+              <a href="<%= gallery.videoUrl %>" target="_blank" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-street bg-accent px-5 py-2.5 rounded-xl w-fit">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Tonton Video
+              </a>
+            <% } %>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+
+    <% if (galleries.length === 0) { %>
+      <div class="text-center py-20">
+        <svg class="w-16 h-16 mx-auto text-muted/30 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <h3 class="text-xl font-semibold text-paper mb-2">Belum Ada Galeri</h3>
+        <p class="text-muted">Portofolio akan ditampilkan di sini setelah admin menambahkan foto/video.</p>
+      </div>
+    <% } %>
+  </main>
+
+<%- include('partials/footer') %>

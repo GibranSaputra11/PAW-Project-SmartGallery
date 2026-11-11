@@ -1,0 +1,102 @@
+<%- include('../partials/head', { title: 'Kelola Testimoni - Smart Gallery' }) %>
+
+<body class="bg-street text-paper min-h-screen flex flex-col selection:bg-accent selection:text-street">
+
+  <header class="sticky top-0 z-40 bg-street/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/admin/dashboard" class="flex items-center gap-2 group">
+        <svg class="w-8 h-8 text-accent group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <span class="font-display text-2xl tracking-wider text-paper">SMART</span>
+      </a>
+      <span class="font-script text-accent text-xl -ml-6 -mt-2">Gallery</span>
+
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-muted">Admin: <strong class="text-paper"><%= session.username %></strong></span>
+        <a href="/admin/dashboard" class="text-muted hover:text-paper transition-colors text-sm">Dashboard</a>
+        <form action="/auth/logout" method="POST" class="inline">
+          <button type="submit" class="text-red-400 hover:text-red-300 text-sm font-medium">Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl font-display uppercase tracking-wide text-paper">Kelola Testimoni</h1>
+        <p class="text-muted text-sm mt-1">Kelola review & testimoni klien</p>
+      </div>
+      <a href="/admin/testimonials/create" class="bg-accent hover:bg-accent/90 text-street font-bold px-6 py-3 rounded-xl transition-all flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Tambah Testimoni
+      </a>
+    </div>
+
+    <% if (typeof message !== 'undefined' && message) { %>
+      <div class="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-sm flex items-center gap-2">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span><%= message %></span>
+      </div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm flex items-center gap-2">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <span><%= error %></span>
+      </div>
+    <% } %>
+
+    <div class="bg-cardbg rounded-2xl border border-slate-800 overflow-hidden">
+      <% if (testimonials.length === 0) { %>
+        <div class="text-center py-20">
+          <svg class="w-16 h-16 mx-auto text-muted/30 mb-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.690h3.462c.969 0 1.371 1.24.588 1.810l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.690l1.07-3.292z"/></svg>
+          <h3 class="text-xl font-semibold text-paper mb-2">Belum Ada Testimoni</h3>
+          <p class="text-muted mb-6">Mulai tambahkan testimoni klien pertama Anda.</p>
+          <a href="/admin/testimonials/create" class="bg-accent hover:bg-accent/90 text-street font-bold px-6 py-3 rounded-xl transition-all inline-flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            Tambah Testimoni Pertama
+          </a>
+        </div>
+      <% } else { %>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-street/50 border-b border-slate-800">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Nama Klien</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Rating</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Pesan</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/50">
+              <% testimonials.forEach(function(t) { %>
+                <tr class="hover:bg-street/50 transition-colors">
+                  <td class="px-6 py-4 font-medium text-paper"><%= t.clientName %></td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-1 text-accent">
+                      <% for(let i=0; i < t.rating; i++) { %>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.690h3.462c.969 0 1.371 1.24.588 1.810l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.690l1.07-3.292z"/></svg>
+                      <% } %>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-muted line-clamp-2 max-w-xs">"<%= t.message %>"</td>
+                  <td class="px-6 py-4">
+                    <form action="/admin/testimonials/<%= t.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Yakin hapus testimoni ini?')">
+                      <button type="submit" class="text-red-400 hover:text-red-300 text-sm font-medium flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v12m-6 0h12a2 2 0 002-2V7a2 2 0 00-2-2H7"></path></svg>
+                        Hapus
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>

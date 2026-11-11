@@ -1,196 +1,365 @@
-<%- include('partials/head', { judul: judul }) %>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+<%- include('partials/head', { title: title }) %>
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="text-xl font-black tracking-tight text-indigo-600 flex items-center gap-2">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<body class="bg-street text-paper min-h-screen flex flex-col selection:bg-accent selection:text-street">
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-40 bg-street/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 group">
+        <svg class="w-8 h-8 text-accent group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
         </svg>
-        <%= namaAplikasi %>
+        <span class="font-display text-2xl tracking-wider text-paper">SMART</span>
       </a>
-      <nav class="flex items-center gap-6 text-sm font-semibold">
-        <a href="/" class="text-indigo-600 hover:text-indigo-800 transition-colors">Pricelist</a>
-        <a href="/api/paket" class="text-slate-600 hover:text-indigo-600 transition-colors">API Paket</a>
-        <a href="/api/status" class="text-slate-600 hover:text-indigo-600 transition-colors">API Status</a>
+      <span class="font-script text-accent text-xl -ml-6 -mt-2">Gallery</span>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="/" class="text-accent hover:text-accent/80 transition-colors">Pricelist</a>
+        <a href="/gallery" class="text-muted hover:text-paper transition-colors">Portofolio</a>
+        <% if (session && session.userId) { %>
+          <a href="/admin/dashboard" class="bg-accent/10 text-accent px-4 py-2 rounded-xl border border-accent/20 hover:bg-accent/20 transition-all font-semibold">Dashboard Admin</a>
+          <form action="/auth/logout" method="POST" class="inline">
+            <button type="submit" class="text-muted hover:text-red-400 transition-colors">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/login" class="text-muted hover:text-paper transition-colors">Admin Login</a>
+        <% } %>
       </nav>
     </div>
   </header>
 
-  <main class="pb-24">
-    <!-- Hero Section -->
-    <section class="max-w-6xl mx-auto px-6 pt-16 pb-12 text-center">
-      <span class="inline-block bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
-        Professional Photography & Videography Services
-      </span>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900">
-        Pricelist & Paket Layanan Dokumentasi
-      </h1>
-      <p class="mt-6 text-lg max-w-2xl mx-auto text-slate-600 leading-relaxed">
-        Pilih paket dokumentasi terbaik untuk momen spesial Anda. Transparan, profesional, dan siap mengabadikan setiap detik berharga.
-      </p>
-    </section>
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 pt-20 pb-16 text-center relative">
+    <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+    
+    <div class="inline-flex items-center gap-2 bg-cardbg border border-slate-800 text-accent text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+      <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+      Instant Price & AI Assistant Online 24/7
+    </div>
 
-    <!-- Search & Filter Bar -->
-    <section class="max-w-6xl mx-auto px-6 pb-10">
-      <form action="/" method="GET" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-4 items-center">
-        <!-- Search Input -->
-        <div class="flex-1 w-full">
-          <label for="search" class="sr-only">Cari paket</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
+    <h1 class="text-6xl sm:text-7xl md:text-8xl font-display tracking-wide uppercase text-paper drop-shadow-lg">
+      SMART <span class="text-accent font-script normal-case text-5xl sm:text-6xl md:text-7xl">Gallery</span>
+    </h1>
+    
+    <p class="mt-6 text-lg sm:text-xl max-w-2xl mx-auto text-muted font-normal leading-relaxed">
+      Instant Price, Unforgettable Moments. Solusi cepat sewa jasa fotografi & videografi profesional untuk wisuda, prewedding, dan wedding Anda.
+    </p>
+
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <button onclick="toggleChatbot()" class="w-full sm:w-auto bg-accent hover:bg-accent/90 text-street font-bold px-8 py-4 rounded-2xl transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-3 text-base">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+        Tanyakan Harga via AI Chatbot
+      </button>
+      <a href="#pricelist" class="w-full sm:w-auto bg-cardbg hover:bg-slate-800 text-paper font-semibold px-8 py-4 rounded-2xl border border-slate-800 transition-all text-center text-base">
+        Lihat Daftar Pricelist
+      </a>
+    </div>
+  </section>
+
+  <!-- Pricelist Section -->
+  <section id="pricelist" class="max-w-7xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-display uppercase tracking-wide">Pricelist & Paket Layanan</h2>
+      <p class="text-muted text-sm mt-2">Transparan, fleksibel, dan langsung siap dipesan.</p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <% categories.forEach(function(cat) { %>
+        <button onclick="filterPackages('<%= cat %>')" class="cat-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all border <%= selectedCategory === cat ? 'bg-accent text-street border-accent shadow-md shadow-accent/10' : 'bg-cardbg text-muted border-slate-800 hover:border-slate-700 hover:text-paper' %>" data-category="<%= cat %>">
+          <%= cat %>
+        </button>
+      <% }); %>
+    </div>
+
+    <!-- Package Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="package-grid">
+      <% packages.forEach(function(item) { %>
+        <div class="package-card bg-cardbg rounded-3xl p-8 border <%= item.popular ? 'border-accent ring-2 ring-accent/20 relative' : 'border-slate-800' %> flex flex-col justify-between hover:border-slate-700 transition-all duration-300" data-category="<%= item.category %>">
+          
+          <% if (item.popular) { %>
+            <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-accent text-street text-xs font-extrabold tracking-wider uppercase px-4 py-1.5 rounded-full shadow-md">
+              Paling Populer
             </span>
-            <input
-              type="text"
-              name="search"
-              id="search"
-              value="<%= searchKeyword %>"
-              placeholder="Cari nama paket, deskripsi, atau kategori..."
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all"
-            >
+          <% } %>
+
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-xl uppercase tracking-wider"><%= item.category %></span>
+              <span class="text-xs font-semibold text-muted bg-street px-3 py-1.5 rounded-xl border border-slate-800"><%= item.duration %></span>
+            </div>
+
+            <h3 class="text-2xl font-display uppercase tracking-wide text-paper"><%= item.name %></h3>
+            <p class="mt-3 text-muted text-sm leading-relaxed"><%= item.description %></p>
+
+            <div class="mt-6 pt-6 border-t border-slate-800/80">
+              <p class="text-xs font-bold text-muted uppercase tracking-wider">Mulai dari</p>
+              <p class="text-3xl font-black text-paper mt-1">
+                Rp <%= item.price.toLocaleString('id-ID') %>
+              </p>
+            </div>
+
+            <div class="mt-6 space-y-3">
+              <p class="text-xs font-bold text-paper uppercase tracking-wider">Fasilitas Termasuk:</p>
+              <ul class="space-y-2.5">
+                <% item.features.forEach(function(c) { %>
+                  <li class="flex items-start gap-3 text-sm text-muted">
+                    <svg class="w-5 h-5 text-wa shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span><%= c %></span>
+                  </li>
+                <% }); %>
+              </ul>
+            </div>
+
+            <% if (item.notIncluded && item.notIncluded.length > 0) { %>
+              <div class="mt-5 pt-4 border-t border-slate-800/40">
+                <p class="text-xs font-bold text-muted/60 uppercase tracking-wider mb-2">Tidak Termasuk:</p>
+                <ul class="space-y-1.5">
+                  <% item.notIncluded.forEach(function(nc) { %>
+                    <li class="flex items-center gap-2.5 text-xs text-muted/60">
+                      <svg class="w-4 h-4 text-slate-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                      <span><%= nc %></span>
+                    </li>
+                  <% }); %>
+                </ul>
+              </div>
+            <% } %>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-800/80 flex items-center justify-between gap-4">
+            <a href="/paket/<%= item.id %>" class="w-full text-center bg-street hover:bg-slate-800 text-paper font-semibold py-3 px-4 rounded-xl border border-slate-800 transition-colors text-sm">
+              Detail Paket
+            </a>
+            <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20<%= encodeURIComponent(item.name) %>" target="_blank" class="w-full text-center bg-wa hover:bg-wa/90 text-street font-bold py-3 px-4 rounded-xl transition-colors text-sm shadow-sm flex items-center justify-center gap-2">
+              <span>Pesan WA</span>
+            </a>
+          </div>
+
+        </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 border-t border-slate-800">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-display uppercase tracking-wide">Portofolio Terbaru</h2>
+        <p class="text-muted text-sm mt-2">Koleksi dokumentasi pilihan dari berbagai acara.</p>
+      </div>
+      <a href="/gallery" class="text-accent hover:underline font-semibold text-sm flex items-center gap-1">
+        Lihat Semua Galeri &rarr;
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% galleries.forEach(function(gallery) { %>
+        <div class="group relative bg-cardbg rounded-2xl overflow-hidden border border-slate-800 aspect-[4/3]">
+          <img src="<%= gallery.imageUrl %>" alt="<%= gallery.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-street/90 via-street/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
+            <span class="text-xs font-bold text-accent uppercase tracking-wider mb-1"><%= gallery.category %></span>
+            <h4 class="text-lg font-bold text-paper"><%= gallery.title %></h4>
+            <% if (gallery.videoUrl) { %>
+              <a href="<%= gallery.videoUrl %>" target="_blank" class="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-street bg-accent px-4 py-2 rounded-xl w-fit">
+                Tonton Video
+              </a>
+            <% } %>
           </div>
         </div>
-
-        <!-- Category Select -->
-        <div class="w-full sm:w-56">
-          <label for="kategori" class="sr-only">Filter kategori</label>
-          <select
-            name="kategori"
-            id="kategori"
-            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all appearance-none bg-no-repeat bg-right pr-10"
-            style='background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27 stroke=%27%23475569%27%3E%3Cpath stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M19 9l-7 7-7-7%27%3E%3C/path%3E%3C/svg%3E"); background-position: right 0.85rem center; background-size: 1.25rem;'
-          >
-            <% categories.forEach(function(cat) { %>
-              <option value="<%= cat %>" <%= cat === selectedCategory ? 'selected' : '' %>><%= cat %></option>
-            <% }); %>
-          </select>
-        </div>
-
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          class="w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-all shrink-0"
-        >
-          Filter Pricelist
-        </button>
-
-        <% if (selectedCategory !== 'Semua' || searchKeyword) { %>
-          <a
-            href="/"
-            class="text-sm font-semibold text-slate-500 hover:text-slate-800 px-4 py-2 transition-colors shrink-0"
-          >
-            Reset Filter
-          </a>
-        <% } %>
-      </form>
-
-      <!-- Hasil Info -->
-      <div class="mt-4 flex items-center justify-between text-sm text-slate-500 px-2">
-        <p>Menampilkan <strong class="text-slate-800"><%= paket.length %></strong> paket layanan</p>
-        <% if (selectedCategory !== 'Semua' || searchKeyword) { %>
-          <p>Filter aktif: <span class="font-medium text-indigo-600"><%= selectedCategory %></span> <%= searchKeyword ? `("${searchKeyword}")` : '' %></p>
-        <% } %>
-      </div>
-    </section>
-
-    <!-- Pricelist Cards Grid -->
-    <section class="max-w-6xl mx-auto px-6">
-      <% if (paket.length > 0) { %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <% paket.forEach(function(item) { %>
-            <div class="bg-white rounded-3xl p-8 shadow-sm border <%= item.populer ? 'border-indigo-600 ring-2 ring-indigo-600/20 relative' : 'border-slate-200' %> flex flex-col justify-between hover:shadow-xl transition-all duration-300">
-              
-              <% if (item.populer) { %>
-                <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-extrabold tracking-wider uppercase px-4 py-1.5 rounded-full shadow-sm">
-                  Paling Populer
-                </span>
-              <% } %>
-
-              <div>
-                <div class="flex items-center justify-between gap-2 mb-3">
-                  <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg uppercase tracking-wider"><%= item.kategori %></span>
-                  <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg"><%= item.durasi %></span>
-                </div>
-
-                <h3 class="text-2xl font-black text-slate-900 tracking-tight"><%= item.nama %></h3>
-                <p class="mt-3 text-slate-600 text-sm leading-relaxed"><%= item.deskripsi %></p>
-
-                <div class="mt-6 pt-6 border-t border-slate-100">
-                  <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mulai dari</p>
-                  <p class="text-3xl font-black text-slate-900 mt-1">
-                    Rp <%= item.harga.toLocaleString('id-ID') %>
-                  </p>
-                </div>
-
-                <div class="mt-6 space-y-3">
-                  <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">Fasilitas Termasuk:</p>
-                  <ul class="space-y-2.5">
-                    <% item.cakupan.forEach(function(c) { %>
-                      <li class="flex items-start gap-3 text-sm text-slate-700">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span><%= c %></span>
-                      </li>
-                    <% }); %>
-                  </ul>
-                </div>
-
-                <% if (item.tidakTermasuk && item.tidakTermasuk.length > 0) { %>
-                  <div class="mt-5 pt-4 border-t border-slate-100/60">
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tidak Termasuk:</p>
-                    <ul class="space-y-1.5">
-                      <% item.tidakTermasuk.forEach(function(nc) { %>
-                        <li class="flex items-center gap-2.5 text-xs text-slate-400">
-                          <svg class="w-4 h-4 text-slate-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                          </svg>
-                          <span><%= nc %></span>
-                        </li>
-                      <% }); %>
-                    </ul>
-                  </div>
-                <% } %>
-              </div>
-
-              <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-4">
-                <a href="/paket/<%= item.id %>" class="w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl transition-colors text-sm">
-                  Detail Paket
-                </a>
-                <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20<%= encodeURIComponent(item.nama) %>" target="_blank" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm shadow-sm">
-                  Pesan via WA
-                </a>
-              </div>
-
-            </div>
-          <% }); %>
-        </div>
-      <% } else { %>
-        <div class="text-center py-20 bg-white rounded-3xl border border-slate-200">
-          <svg class="w-16 h-16 mx-auto text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <h3 class="text-xl font-bold text-slate-800">Tidak ada paket ditemukan</h3>
-          <p class="mt-2 text-slate-500 text-sm">Coba ubah kata kunci pencarian atau pilih kategori lain.</p>
-          <a href="/" class="inline-block mt-6 bg-indigo-50 text-indigo-600 font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-indigo-100 transition-colors">
-            Reset Semua Filter
-          </a>
-        </div>
-      <% } %>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 py-10 mt-auto">
-    <div class="max-w-6xl mx-auto px-6 text-center text-sm text-slate-500">
-      <p>&copy; <%= new Date().getFullYear() %> <%= namaAplikasi %> — Professional Photography & Videography Services. All rights reserved.</p>
+      <% }); %>
     </div>
-  </footer>
+  </section>
 
-</body>
-</html>
+  <!-- Testimonials Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 border-t border-slate-800">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-display uppercase tracking-wide">Testimoni Klien</h2>
+      <p class="text-muted text-sm mt-2">Kepuasan klien adalah prioritas utama kami.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% testimonials.forEach(function(t) { %>
+        <div class="bg-cardbg rounded-3xl p-8 border border-slate-800 flex flex-col justify-between relative">
+          <div class="flex items-center gap-1 mb-4 text-accent">
+            <% for(let i=0; i < t.rating; i++) { %>
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.690h3.462c.969 0 1.371 1.24.588 1.810l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.690l1.07-3.292z"/></svg>
+            <% } %>
+          </div>
+          <p class="font-script text-xl text-paper/90 leading-relaxed mb-6">"<%= t.message %>"</p>
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="font-bold text-sm text-paper"><%= t.clientName %></span>
+            <span class="text-xs text-muted">Klien Terverifikasi</span>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <!-- Floating AI Chatbot Widget -->
+  <div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <!-- Chat Button -->
+    <button onclick="toggleChatbot()" id="chat-toggle-btn" class="bg-accent hover:bg-accent/90 text-street w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    </button>
+
+    <!-- Chat Box -->
+    <div id="chat-box" class="hidden w-96 sm:w-[400px] h-[550px] bg-cardbg border border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden mb-4 transition-all duration-300">
+      <!-- Chat Header -->
+      <div class="bg-accent text-street px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 rounded-full bg-street animate-pulse"></div>
+          <div>
+            <h3 class="font-bold text-sm">Smart AI Assistant</h3>
+            <p class="text-xs opacity-80">Online 24/7 - Siap bantu info harga</p>
+          </div>
+        </div>
+        <button onclick="toggleChatbot()" class="text-street hover:opacity-75">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+        <div class="flex gap-3">
+          <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent font-bold text-xs shrink-0">AI</div>
+          <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-paper max-w-[80%] leading-relaxed">
+            Halo! Saya asisten AI Smart Gallery 🤖<br><br>Ada yang bisa saya bantu terkait harga paket wisuda, wedding, atau prewedding hari ini?
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Template Chips -->
+      <div class="px-4 py-2 bg-street/50 border-t border-slate-800 flex gap-2 overflow-x-auto text-xs">
+        <button onclick="sendQuickMessage('Berapa harga paket wisuda?')" class="bg-cardbg hover:bg-slate-800 text-paper px-3 py-1.5 rounded-xl border border-slate-800 whitespace-nowrap transition-colors">🎓 Paket Wisuda</button>
+        <button onclick="sendQuickMessage('Berapa harga paket wedding?')" class="bg-cardbg hover:bg-slate-800 text-paper px-3 py-1.5 rounded-xl border border-slate-800 whitespace-nowrap transition-colors">💍 Paket Wedding</button>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20konsultasi%20jasa%20fotografi" target="_blank" class="bg-wa/20 text-wa hover:bg-wa/30 px-3 py-1.5 rounded-xl border border-wa/30 whitespace-nowrap transition-colors font-semibold">📲 Hubungi WA</a>
+      </div>
+
+      <!-- Input Area -->
+      <form id="chat-form" onsubmit="handleChatSubmit(event)" class="p-3 bg-street border-t border-slate-800 flex gap-2">
+        <input type="text" id="chat-input" placeholder="Tulis pesan atau pertanyaan..." class="flex-1 bg-cardbg border border-slate-800 rounded-xl px-4 py-2.5 text-paper placeholder-muted focus:outline-none focus:border-accent text-sm">
+        <button type="submit" class="bg-accent hover:bg-accent/90 text-street px-5 py-2.5 rounded-xl font-bold transition-all">Kirim</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const sessionId = 'session_' + Math.random().toString(36.substring(2));
+
+    function toggleChatbot() {
+      const chatBox = document.getElementById('chat-box');
+      chatBox.classList.toggle('hidden');
+      if (!chatBox.classList.contains('hidden')) {
+        document.getElementById('chat-input').focus();
+      }
+    }
+
+    function sendQuickMessage(text) {
+      document.getElementById('chat-input').value = text;
+      handleChatSubmit(new Event('submit'));
+    }
+
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const messagesContainer = document.getElementById('chat-messages');
+      
+      // Append user message
+      messagesContainer.innerHTML += `
+        <div class="flex gap-3 justify-end">
+          <div class="bg-accent text-street rounded-2xl rounded-tr-none p-4 max-w-[80%] leading-relaxed font-medium">
+            ${escapeHtml(message)}
+          </div>
+          <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-paper font-bold text-xs shrink-0">U</div>
+        </div>
+      `;
+      input.value = '';
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Append typing indicator
+      const typingId = 'typing_' + Date.now();
+      messagesContainer.innerHTML += `
+        <div id="${typingId}" class="flex gap-3">
+          <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent font-bold text-xs shrink-0">AI</div>
+          <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-muted animate-pulse">
+            Sedang mengetik...
+          </div>
+        </div>
+      `;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, sessionId })
+        });
+        const data = await res.json();
+        
+        document.getElementById(typingId).remove();
+
+        if (data.success) {
+          messagesContainer.innerHTML += `
+            <div class="flex gap-3">
+              <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent font-bold text-xs shrink-0">AI</div>
+              <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-paper max-w-[80%] leading-relaxed whitespace-pre-line">
+                ${escapeHtml(data.response)}
+              </div>
+            </div>
+          `;
+        } else {
+          messagesContainer.innerHTML += `
+            <div class="flex gap-3">
+              <div class="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 font-bold text-xs shrink-0">!</div>
+              <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-red-400 max-w-[80%]">
+                Maaf, terjadi gangguan pada sistem AI.
+              </div>
+            </div>
+          `;
+        }
+      } catch (err) {
+        document.getElementById(typingId).remove();
+        messagesContainer.innerHTML += `
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 font-bold text-xs shrink-0">!</div>
+            <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-red-400 max-w-[80%]">
+              Gagal terhubung ke server.
+            </div>
+          </div>
+        `;
+      }
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function filterPackages(category) {
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.category === category) {
+          btn.className = 'cat-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all border bg-accent text-street border-accent shadow-md shadow-accent/10';
+        } else {
+          btn.className = 'cat-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all border bg-cardbg text-muted border-slate-800 hover:border-slate-700 hover:text-paper';
+        }
+      });
+
+      document.querySelectorAll('.package-card').forEach(card => {
+        if (category === 'Semua' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "&#039;");
+    }
+  </script>
+
+<%- include('partials/footer') %>

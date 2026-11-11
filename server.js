@@ -1,30 +1,68 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
-const config = require('./config');
+require('dotenv').config();
+
+const sequelize = require('./config/database');
+const db = require('./models');
 const logger = require('./middlewares/logger');
-const routes = require('./routes');
+const webRoutes = require('./routes/web');
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-// View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware
-app.use(express.json());
 app.use(logger);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.use('/', routes);
-
-// 404 untuk semua yang tidak cocok dengan route di atas
-app.use((req, res) => {
-  if (req.originalUrl.startsWith('/api')) {
-    return res.status(404).json({ sukses: false, pesan: 'Endpoint tidak ditemukan' });
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'smartgallery_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
   }
-  res.status(404).send('Halaman tidak ditemukan');
+}));
+
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  res.locals.currentPath = req.path;
+  next();
 });
 
-app.listen(config.port, () => {
-  console.log(`Server jalan di http://localhost:${config.port}`);
+app.use('/', webRoutes);
+app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
+
+app.use((req, res) => {
+  res.status(404).render('404', { 
+    title: 'Halaman Tidak Ditemukan - Smart Gallery',
+    namaAplikasi: 'Smart Gallery' 
+  });
 });
+
+const PORT = process.env.PORT || 3000;
+
+async function startServer() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connected successfully');
+    
+    await sequelize.sync({ alter: true });
+    console.log('Models synchronized');
+    
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to start server:', error);
+  }
+}
+
+startServer();

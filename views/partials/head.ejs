@@ -1,22 +1,40 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= judul %></title>
+  <title><%= typeof title !== 'undefined' ? title : 'Smart Gallery' %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
+          colors: {
+            street: '#0D0D0D',
+            accent: '#FFA800',
+            paper: '#FFFFFF',
+            muted: '#A0A0A0',
+            cardbg: '#1C1C1E',
+            wa: '#25D366'
+          },
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif']
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Anton', 'sans-serif'],
+            script: ['Caveat', 'cursive']
           }
         }
       }
     }
   </script>
+  <style>
+    body {
+      background-color: #0D0D0D;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>

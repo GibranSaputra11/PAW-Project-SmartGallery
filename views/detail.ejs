@@ -1,4 +1,4 @@
-<%- include('partials/head', { judul: judul }) %>
+<%- include('partials/head', { title: title }) %>
 <body class="bg-slate-50 text-slate-900 font-sans antialiased">
 
   <!-- Header -->
@@ -23,24 +23,24 @@
       
       <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
         <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">
-          <%= item.kategori %>
+          <%= item.category %>
         </span>
         <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl">
-          Durasi: <%= item.durasi %>
+          Durasi: <%= item.duration %>
         </span>
       </div>
 
-      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight"><%= item.nama %></h1>
-      <p class="mt-4 text-lg text-slate-600 leading-relaxed"><%= item.deskripsi %></p>
+      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight"><%= item.name %></h1>
+      <p class="mt-4 text-lg text-slate-600 leading-relaxed"><%= item.description %></p>
 
       <div class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Estimasi Biaya Paket</p>
           <p class="text-3xl sm:text-4xl font-black text-slate-900 mt-1">
-            Rp <%= item.harga.toLocaleString('id-ID') %>
+            Rp <%= item.price ? item.price.toLocaleString('id-ID') : 0 %>
           </p>
         </div>
-        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20untuk%20memesan%20<%= encodeURIComponent(item.nama) %>" target="_blank" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-colors text-center shadow-sm">
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20untuk%20memesan%20<%= encodeURIComponent(item.name) %>" target="_blank" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-colors text-center shadow-sm">
           Pesan Paket Ini via WhatsApp
         </a>
       </div>
@@ -49,22 +49,24 @@
         <div>
           <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Fasilitas Termasuk:</h3>
           <ul class="space-y-3">
-            <% item.cakupan.forEach(function(c) { %>
-              <li class="flex items-start gap-3 text-slate-700 text-sm">
-                <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><%= c %></span>
-              </li>
-            <% }); %>
+            <% if (item.features && item.features.length > 0) { %>
+              <% item.features.forEach(function(c) { %>
+                <li class="flex items-start gap-3 text-slate-700 text-sm">
+                  <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span><%= c %></span>
+                </li>
+              <% }); %>
+            <% } %>
           </ul>
         </div>
 
-        <% if (item.tidakTermasuk && item.tidakTermasuk.length > 0) { %>
+        <% if (item.notIncluded && item.notIncluded.length > 0) { %>
           <div>
             <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Tidak Termasuk:</h3>
             <ul class="space-y-3">
-              <% item.tidakTermasuk.forEach(function(nc) { %>
+              <% item.notIncluded.forEach(function(nc) { %>
                 <li class="flex items-start gap-3 text-slate-400 text-sm">
                   <svg class="w-5 h-5 text-slate-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
