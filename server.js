@@ -9,6 +9,7 @@ const logger = require('./middlewares/logger');
 const webRoutes = require('./routes/web');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
+const chatRoutes = require('./routes/chat');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/chat', chatRoutes);
 app.use('/', webRoutes);
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);

@@ -9,6 +9,6 @@ router.get('/gallery', publicController.getGallery);
 
 router.get('/api/paket', publicController.getApiPackages);
 router.get('/api/status', publicController.getApiStatus);
-router.post('/api/chat', publicController.postChatbot);
+// router.post('/api/chat', publicController.postChatbot);
 
 module.exports = router;

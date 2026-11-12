@@ -249,7 +249,7 @@
   </div>
 
   <script>
-    const sessionId = 'session_' + Math.random().toString(36.substring(2));
+    // const sessionId = 'session_' + Math.random().toString(36.substring(2)); 
 
     function toggleChatbot() {
       const chatBox = document.getElementById('chat-box');
@@ -300,18 +300,18 @@
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message, sessionId })
+          body: JSON.stringify({ message })
         });
         const data = await res.json();
         
         document.getElementById(typingId).remove();
 
-        if (data.success) {
+        if (data.success && data.data && data.data.reply) {
           messagesContainer.innerHTML += `
             <div class="flex gap-3">
               <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent font-bold text-xs shrink-0">AI</div>
               <div class="bg-street border border-slate-800 rounded-2xl rounded-tl-none p-4 text-paper max-w-[80%] leading-relaxed whitespace-pre-line">
-                ${escapeHtml(data.response)}
+                ${escapeHtml(data.data.reply)}
               </div>
             </div>
           `;
@@ -357,8 +357,9 @@
       });
     }
 
+    // ini adalah fungsi untuk menghindari XSS, memastikan teks yang dimasukkan aman untuk ditampilkan di HTML
     function escapeHtml(text) {
-      return text.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "&#039;");
+      return text.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, "").replace(/'/g, "&#039;"); 
     }
   </script>
 
