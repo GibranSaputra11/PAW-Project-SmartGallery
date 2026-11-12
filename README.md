@@ -43,3 +43,42 @@ Implementasi penuh arsitektur MVC (Model-View-Controller) dengan database Postgr
 ### 4. Bugfixes & Refactoring
 - Perbaikan path include EJS pada direktori `views/admin/` dan view publik (`detail.ejs`).
 - Sinkronisasi variabel view dengan struktur kolom database Sequelize.
+
+---
+
+## 🤖 UPDATE WEEK 9: Generative AI & Prompt Engineering (AI Chatbot CS)
+
+Implementasi fitur Customer Service Otomatis berbasis **Google Gemini API** dengan teknik *Prompt Engineering* dan *Defense in Depth* untuk aplikasi **Smart Gallery**:
+
+### 1. Integrasi Google Gemini LLM (`/api/chat`)
+- Menggunakan `@google/generative-ai` (`gemini-1.5-flash`).
+- Konfigurasi environment aman di `.env` (`GEMINI_API_KEY`).
+- Service layer (`services/gemini.service.js`) untuk komunikasi API dan manajemen konteks.
+
+### 2. Dynamic System Instruction & Guardrail
+- Mengambil data paket (`Package`) dan FAQ secara dinamis dari database PostgreSQL ke dalam *System Instruction* AI.
+- **Aturan Ketat (Guardrail):**
+  - AI **HANYA** boleh menjawab seputar layanan fotografi/videografi dan FAQ Smart Gallery.
+  - Menolak pertanyaan di luar topik (coding, resep, politik, dll) dengan sopan.
+  - Mencegah *Prompt Injection* (mengabaikan instruksi, berpura-pura jadi AI lain).
+  - Melarang penghasilan kode program/tag HTML.
+
+### 3. Validasi & Keamanan Input (`middlewares/validateChatInput.js`)
+- Validasi wajib isi dan batas panjang karakter (maksimal 500 karakter).
+- Deteksi pola *suspicious/prompt injection* di tingkat kode (Defense in Depth).
+
+### 4. UI Chatbot & API Endpoint
+- Floating widget interaktif di halaman utama (`views/index.ejs`).
+- Quick template chips untuk pertanyaan cepat (Paket Wisuda, Paket Wedding, Kontak WA).
+- Endpoint REST API `POST /api/chat` mengembalikan JSON terstruktur.
+
+### 5. Dokumentasi Screenshot & Uji Coba Chatbot
+
+# Floating AI Chatbot Widget pada Halaman Utama
+<img width="1919" height="1079" alt="Chatbot Widget" src="" />
+
+# Respons AI Chatbot Berdasarkan Data Paket & FAQ Database
+<img width="1919" height="1079" alt="Chatbot Response" src="" />
+
+# Validasi & Guardrail (Penolakan Pertanyaan di Luar Konteks)
+<img width="1919" height="1079" alt="Chatbot Guardrail" src="" />
