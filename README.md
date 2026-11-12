@@ -75,10 +75,11 @@ Implementasi fitur Customer Service Otomatis berbasis **Google Gemini API** deng
 ### 5. Dokumentasi Screenshot & Uji Coba Chatbot
 
 # Floating AI Chatbot Widget pada Halaman Utama
-<img width="1919" height="1079" alt="Chatbot Widget" src="" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/34e7d373-0747-4aee-80f6-fa3e392726fe" />
 
 # Respons AI Chatbot Berdasarkan Data Paket & FAQ Database
-<img width="1919" height="1079" alt="Chatbot Response" src="" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/f81a4a3e-0743-40fc-ae44-3e9e7a011b32" />
 
 # Validasi & Guardrail (Penolakan Pertanyaan di Luar Konteks)
-<img width="1919" height="1079" alt="Chatbot Guardrail" src="" />
+<img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/bd5cc0f1-f8d6-4c73-a091-0c408cee7d34" />
+
