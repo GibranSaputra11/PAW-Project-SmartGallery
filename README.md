@@ -83,3 +83,23 @@ Implementasi fitur Customer Service Otomatis berbasis **Google Gemini API** deng
 # Validasi & Guardrail (Penolakan Pertanyaan di Luar Konteks)
 <img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/bd5cc0f1-f8d6-4c73-a091-0c408cee7d34" />
 
+---
+
+## 🔧 UPDATE WEEK 10: Admin UI UX Overhaul & Refactoring
+
+### 1. Admin Panel UX Overhaul
+- **Sidebar Navigasi Permanen** (`views/partials/admin-sidebar.ejs`): Navigasi kiri sticky, highlight item aktif, ikon Lucide, collapse/expand untuk mobile.
+- **Mobile Navigation**: Hamburger menu toggle, overlay backdrop, smooth slide animation via vanilla JS di `views/index.ejs`.
+- **Enhanced FAQ Edit View**: Form edit FAQ diperbaiki binding data & validasi, sinkron kolom DB.
+- **Dashboard Stats**: Ringkasan jumlah paket, galeri, testimoni, FAQ, chat history real-time.
+
+### 2. Database & Config Refactoring
+- **Variabel Password DB**: Refactor `.env` → `DB_PASS` (standar), update `config/database.js` & dokumentasi.
+- **Session Store**: `connect-pg-simple` pakai native `pg.Pool` instance (bukan Sequelize connectionManager) untuk stabilitas.
+- **EJS Include Path Fix**: `../partials/navbar` relatif dari folder `views/` — menghindari error `include not found` di sub-direktori admin.
+
+### 3. Bugfixes & Polish
+- Perbaikan path include EJS pada `views/admin/*.ejs` & view publik.
+- Sinkronisasi variabel view dengan struktur kolom Sequelize (`popular`, `features`, `notIncluded`).
+- Cleanup kode tidak terpakai, konsolidasi import, penamaan variabel konsisten.
+
