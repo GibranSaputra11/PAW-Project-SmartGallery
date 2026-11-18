@@ -20,7 +20,7 @@ const Gallery = sequelize.define('Gallery', {
     allowNull: true
   },
   category: {
-    type: DataTypes.ENUM('Wisuda', 'Prewedding', 'Wedding'),
+    type: DataTypes.ENUM('Wisuda', 'Prewedding', 'Wedding', 'Lainnya', 'Video'),
     allowNull: false
   }
 }, {

@@ -215,7 +215,7 @@ exports.getPackageEdit = async (req, res) => {
     res.render('admin/pricing-edit', {
       title: 'Edit Paket - Smart Gallery',
       username: req.session.username,
-      package: pkg,
+      pkg,
       error: null,
       success: null
     });
