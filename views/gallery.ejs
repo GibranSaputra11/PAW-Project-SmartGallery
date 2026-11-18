@@ -43,61 +43,82 @@
       <% }); %>
     </div>
 
-    <!-- Gallery Staggered Grid (4 columns desktop, 2 tablet, 1 mobile) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="gallery-grid">
-      <% galleries.forEach(function(gallery, index) { 
-         // Staggered aspect ratio pattern based on index
-         let colMod = index % 4;
-         let aspectClass = 'aspect-[2/3]';
-         if (colMod === 0 || colMod === 2) {
-           aspectClass = (Math.floor(index / 4) % 2 === 0) ? 'aspect-[2/3]' : 'aspect-[4/5]';
-         } else {
-           aspectClass = (Math.floor(index / 4) % 2 === 0) ? 'aspect-[4/5]' : 'aspect-[2/3]';
-         }
+    <% if (galleries.length > 0) { %>
+      <%
+        // Distribusikan data ke 4 kolom agar tinggi selang-seling (2/3 & 4/5) bekerja secara visual
+        const columns = [[], [], [], []];
+        galleries.forEach(function(item, idx) {
+          columns[idx % 4].push(item);
+        });
       %>
-        <article class="group relative bg-milk border border-hairline <%= aspectClass %> overflow-hidden gallery-card cursor-pointer rounded-none" data-category="<%= gallery.category %>" onclick="openLightbox('<%= gallery.imageUrl %>', '<%= encodeURIComponent(gallery.title) %>', '<%= gallery.category %>', '<%= gallery.eventDate ? new Date(gallery.eventDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '' %>', '<%= gallery.videoUrl || '' %>')">
-          <img src="<%= gallery.imageUrl %>" alt="<%= gallery.title %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-none" loading="lazy">
-          
-          <div class="absolute inset-0 bg-gradient-to-t from-ivory/95 via-ivory/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
-            <span class="text-xs font-bold text-ink uppercase tracking-wider mb-1 bg-stone/80 px-2 py-0.5 w-fit rounded-none"><%= gallery.category %></span>
-            <h3 class="text-lg font-bold text-ink line-clamp-1"><%= gallery.title %></h3>
-            <p class="text-xs text-muted mt-0.5"><%= gallery.eventDate ? new Date(gallery.eventDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '' %></p>
-            <% if (gallery.videoUrl) { %>
-              <span class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-milk bg-ink px-3 py-1 w-fit rounded-none">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Video
-              </span>
-            <% } %>
+
+      <!-- Gallery Outer-Aligned Staggered Grid (4 columns desktop, 2 tablet, 1 mobile) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-start" id="gallery-grid">
+        <% columns.forEach(function(colItems, colIdx) { %>
+          <div class="flex flex-col gap-4">
+            <% colItems.forEach(function(gallery, rowIdx) {
+              // Kolom 0 & 2: [2/3, 4/5, ...] | Kolom 1 & 3: [4/5, 2/3, ...]
+              const isOddCol = (colIdx === 0 || colIdx === 2);
+              const aspectClass = isOddCol
+                ? (rowIdx % 2 === 0 ? 'aspect-[2/3]' : 'aspect-[4/5]')
+                : (rowIdx % 2 === 0 ? 'aspect-[4/5]' : 'aspect-[2/3]');
+
+              const formattedDate = gallery.eventDate
+                ? new Date(gallery.eventDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                : '';
+            %>
+              <article
+                class="group relative bg-milk border border-hairline <%= aspectClass %> w-full overflow-hidden gallery-card cursor-pointer rounded-none"
+                data-category="<%= gallery.category %>"
+                data-image="<%= gallery.imageUrl %>"
+                data-title="<%= gallery.title %>"
+                data-date="<%= formattedDate %>"
+                data-video="<%= gallery.videoUrl || '' %>"
+                onclick="openLightbox(this)">
+
+                <img src="<%= gallery.imageUrl %>" alt="<%= gallery.title %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-none" loading="lazy">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-ivory/95 via-ivory/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+                  <span class="text-xs font-bold text-ink uppercase tracking-wider mb-1 bg-stone/80 px-2 py-0.5 w-fit rounded-none"><%= gallery.category %></span>
+                  <h3 class="text-lg font-bold text-ink line-clamp-1"><%= gallery.title %></h3>
+                  <p class="text-xs text-muted mt-0.5"><%= formattedDate %></p>
+                  <% if (gallery.videoUrl) { %>
+                    <span class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-milk bg-ink px-3 py-1 w-fit rounded-none">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      Video
+                    </span>
+                  <% } %>
+                </div>
+
+                <% if (gallery.videoUrl) { %>
+                  <div class="absolute top-3 right-3 bg-ink text-milk text-xs font-bold px-2.5 py-1 rounded-none flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>VIDEO</span>
+                  </div>
+                <% } %>
+              </article>
+            <% }); %>
           </div>
-
-          <% if (gallery.videoUrl) { %>
-            <div class="absolute top-3 right-3 bg-ink text-milk text-xs font-bold px-2.5 py-1 rounded-none shadow-sm flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-              <span>VIDEO</span>
-            </div>
-          <% } %>
-        </article>
-      <% }); %>
-    </div>
-
-    <% if (galleries.length === 0) { %>
-      <div class="text-center py-20">
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="text-center py-20 border border-hairline bg-milk">
         <svg class="w-16 h-16 mx-auto text-muted/30 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
         <h3 class="text-xl font-semibold text-ink mb-2">Belum Ada Galeri</h3>
-        <p class="text-muted">Portofolio akan ditampilkan di sini setelah admin menambahkan foto/video.</p>
+        <p class="text-muted text-sm">Portofolio akan ditampilkan di sini setelah admin menambahkan foto/video.</p>
       </div>
     <% } %>
   </main>
 
   <!-- Lightbox Modal -->
   <div id="lightbox-modal" class="fixed inset-0 z-50 bg-ink/80 backdrop-blur-sm hidden items-center justify-center p-4 sm:p-8">
-    <div class="bg-milk border border-hairline w-full max-w-4xl max-h-[90vh] flex flex-col relative rounded-none shadow-2xl overflow-hidden">
+    <div class="bg-milk border border-hairline w-full max-w-4xl max-h-[90vh] flex flex-col relative rounded-none overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-hairline bg-stone">
         <div>
-          <span id="lightbox-category" class="text-xs font-bold text-ink uppercase tracking-wider bg-alabaster px-2 py-0.5 border border-hairline"></span>
+          <span id="lightbox-category" class="text-xs font-bold text-ink uppercase tracking-wider bg-alabaster px-2 py-0.5 border border-hairline rounded-none"></span>
           <h3 id="lightbox-title" class="text-lg font-display uppercase tracking-wide text-ink mt-1"></h3>
         </div>
-        <button onclick="closeLightbox()" class="text-muted hover:text-ink p-2 transition-colors">
+        <button onclick="closeLightbox()" class="text-muted hover:text-ink p-2 transition-colors" aria-label="Tutup">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -112,7 +133,7 @@
         <p id="lightbox-date" class="text-xs text-muted mt-4 font-mono"></p>
         
         <div id="lightbox-video-link-container" class="mt-4 hidden">
-          <a id="lightbox-video-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-ink text-milk font-semibold py-2.5 px-6 text-sm rounded-none border border-ink">
+          <a id="lightbox-video-btn" href="" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-ink hover:bg-charcoal text-milk font-semibold py-2.5 px-6 text-sm rounded-none border border-ink transition-colors">
             <span>Buka Tautan Video</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
           </a>
@@ -140,7 +161,13 @@
     });
   }
 
-  function openLightbox(imageUrl, title, category, date, videoUrl) {
+  function openLightbox(cardEl) {
+    const imageUrl = cardEl.dataset.image;
+    const title = cardEl.dataset.title;
+    const category = cardEl.dataset.category;
+    const date = cardEl.dataset.date;
+    const videoUrl = cardEl.dataset.video;
+
     const modal = document.getElementById('lightbox-modal');
     const img = document.getElementById('lightbox-img');
     const titleEl = document.getElementById('lightbox-title');
@@ -152,17 +179,18 @@
     const videoBtn = document.getElementById('lightbox-video-btn');
 
     img.src = imageUrl;
-    titleEl.textContent = decodeURIComponent(title);
+    titleEl.textContent = title;
     catEl.textContent = category;
     dateEl.textContent = date ? `Tanggal Acara: ${date}` : '';
 
     if (videoUrl && videoUrl !== 'null' && videoUrl !== '') {
-      // Convert standard youtube watch url to embed if needed
       let embedUrl = videoUrl;
       if (videoUrl.includes('watch?v=')) {
-        embedUrl = videoUrl.replace('watch?v=', 'embed/');
+        embedUrl = videoUrl.replace('watch?v=', 'embed/').split('&')[0];
       } else if (videoUrl.includes('youtu.be/')) {
-        embedUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
+        embedUrl = videoUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0];
+      } else if (videoUrl.includes('youtube.com/shorts/')) {
+        embedUrl = videoUrl.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0];
       }
       iframe.src = embedUrl;
       videoContainer.classList.remove('hidden');
@@ -189,6 +217,13 @@
   // Close modal on background click
   document.getElementById('lightbox-modal').addEventListener('click', function(e) {
     if (e.target === this) {
+      closeLightbox();
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
       closeLightbox();
     }
   });
