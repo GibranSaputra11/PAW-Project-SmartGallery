@@ -70,7 +70,7 @@ exports.getDashboard = async (req, res) => {
       title: 'Dashboard Admin - Smart Gallery',
       username: req.session.username,
       stats: {
-        gallery: galleryCount,
+        galleries: galleryCount,
         packages: packageCount,
         testimonials: testimonialCount,
         faqs: faqCount
@@ -108,7 +108,7 @@ exports.getGalleryCreate = (req, res) => {
 
 exports.postGalleryCreate = async (req, res) => {
   try {
-    const { title, category, videoUrl } = req.body;
+    const { title, category, videoUrl, eventDate } = req.body;
     
     if (!req.file) {
       return res.render('admin/gallery-create', {
@@ -125,7 +125,8 @@ exports.postGalleryCreate = async (req, res) => {
       title,
       imageUrl,
       videoUrl: videoUrl || null,
-      category
+      category,
+      eventDate: eventDate || null
     });
     
     res.render('admin/gallery-create', {
@@ -152,6 +153,48 @@ exports.postGalleryDelete = async (req, res) => {
     res.redirect('/admin/gallery');
   } catch (error) {
     console.error('Delete gallery error:', error);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.getGalleryEdit = async (req, res) => {
+  try {
+    const gallery = await db.Gallery.findByPk(req.params.id);
+    if (!gallery) {
+      return res.redirect('/admin/gallery');
+    }
+    res.render('admin/gallery-edit', {
+      title: 'Edit Galeri - Smart Gallery',
+      username: req.session.username,
+      gallery,
+      error: null,
+      success: null
+    });
+  } catch (error) {
+    console.error('Edit gallery error:', error);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.postGalleryEdit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, category, videoUrl, eventDate } = req.body;
+
+    const gallery = await db.Gallery.findByPk(id);
+    if (!gallery) {
+      return res.redirect('/admin/gallery');
+    }
+
+    gallery.title = title;
+    gallery.category = category;
+    gallery.videoUrl = videoUrl || null;
+    gallery.eventDate = eventDate || null;
+    await gallery.save();
+
+    res.redirect('/admin/gallery');
+  } catch (error) {
+    console.error('Update gallery error:', error);
     res.status(500).send('Server error');
   }
 };
@@ -192,7 +235,7 @@ exports.postPackageCreate = async (req, res) => {
       duration,
       features: features ? features.split(',').map(f => f.trim()) : [],
       notIncluded: notIncluded ? notIncluded.split(',').map(f => f.trim()) : [],
-      popular: popular === 'on'
+      popular: popular === 'true'
     });
 
     res.redirect('/admin/pricing');
@@ -237,7 +280,7 @@ exports.postPackageUpdate = async (req, res) => {
       duration,
       features: features ? features.split(',').map(f => f.trim()) : [],
       notIncluded: notIncluded ? notIncluded.split(',').map(f => f.trim()) : [],
-      popular: popular === 'on'
+      popular: popular === 'true'
     }, { where: { id: req.params.id } });
 
     res.redirect('/admin/pricing');

@@ -11,6 +11,8 @@ router.get('/dashboard', adminController.getDashboard);
 router.get('/gallery', adminController.getGalleryList);
 router.get('/gallery/create', adminController.getGalleryCreate);
 router.post('/gallery/create', upload.single('image'), adminController.postGalleryCreate);
+router.get('/gallery/:id/edit', adminController.getGalleryEdit);
+router.post('/gallery/:id/update', adminController.postGalleryEdit);
 router.post('/gallery/:id/delete', adminController.postGalleryDelete);
 
 router.get('/pricing', adminController.getPackageList);

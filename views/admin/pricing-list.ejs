@@ -45,47 +45,51 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead class="bg-stone border-b border-hairline">
-                <tr>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Nama Paket</th>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Kategori</th>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Harga</th>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Durasi</th>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Status</th>
-                  <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-hairline">
-                <% packages.forEach(function(pkg) { %>
-                  <tr class="hover:bg-stone/50 transition-colors">
-                    <td class="px-6 py-4">
-                      <p class="font-medium text-ink"><%= pkg.name %></p>
-                      <p class="text-xs text-muted line-clamp-1"><%= pkg.description %></p>
-                    </td>
-                    <td class="px-6 py-4">
-                      <span class="text-xs font-semibold px-2.5 py-1 bg-stone border border-hairline text-ink"><%= pkg.category %></span>
-                    </td>
-                    <td class="px-6 py-4 font-semibold text-ink font-mono">Rp <%= pkg.price.toLocaleString('id-ID') %></td>
-                    <td class="px-6 py-4 text-sm text-muted"><%= pkg.duration %></td>
-                    <td class="px-6 py-4">
-                      <% if (pkg.popular) { %>
-                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 bg-stone border border-hairline text-ink">
-                          <span class="w-1.5 h-1.5 rounded-full bg-ink animate-pulse"></span>
-                          Populer
-                        </span>
-                      <% } else { %>
-                        <span class="text-xs text-muted">Reguler</span>
-                      <% } %>
-                    </td>
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-2">
-                        <a href="/admin/pricing/<%= pkg.id %>/edit" class="text-ink hover:text-ink/70 text-sm font-medium font-mono">Edit</a>
-                        <form action="/admin/pricing/<%= pkg.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Yakin hapus paket ini?')">
-                          <button type="submit" class="text-rose-600 hover:text-rose-800 text-sm font-medium font-mono transition-colors">Hapus</button>
-                        </form>
-                      </div>
-                    </td>
-                  </tr>
-                <% }); %>
+                              <tr>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Nama Paket</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Kategori</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Harga</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Durasi</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-wider">Aksi</th>
+                              </tr>
+                            </thead>
+                            <tbody class="divide-y divide-hairline">
+                              <% packages.forEach(function(pkg) { %>
+                                <tr class="hover:bg-stone/50 transition-colors <%= pkg.popular ? 'bg-stone/20' : '' %>">
+                                  <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                      <% if (pkg.popular) { %>
+                                        <span class="w-2 h-2 rounded-full bg-ink inline-block shrink-0" title="Paling Populer"></span>
+                                      <% } %>
+                                      <div>
+                                        <p class="font-medium text-ink"><%= pkg.name %></p>
+                                        <p class="text-xs text-muted line-clamp-1"><%= pkg.description %></p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                    <span class="text-xs font-semibold px-2.5 py-1 bg-stone border border-hairline text-ink"><%= pkg.category %></span>
+                                  </td>
+                                  <td class="px-6 py-4 font-semibold text-ink font-mono">Rp <%= pkg.price.toLocaleString('id-ID') %></td>
+                                  <td class="px-6 py-4 text-sm text-muted"><%= pkg.duration %></td>
+                                  <td class="px-6 py-4">
+                                    <% if (pkg.popular) { %>
+                                      <span class="text-xs font-bold px-2.5 py-1 bg-ink text-milk uppercase tracking-wider inline-block">Populer</span>
+                                    <% } else { %>
+                                      <span class="text-xs font-medium px-2.5 py-1 bg-alabaster border border-hairline text-muted uppercase tracking-wider inline-block">Reguler</span>
+                                    <% } %>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                      <a href="/admin/pricing/<%= pkg.id %>/edit" class="text-ink hover:text-ink/70 text-sm font-medium font-mono">Edit</a>
+                                      <form action="/admin/pricing/<%= pkg.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Yakin hapus paket ini?')">
+                                        <button type="submit" class="text-rose-600 hover:text-rose-800 text-sm font-medium font-mono transition-colors">Hapus</button>
+                                      </form>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% }); %>
               </tbody>
             </table>
           </div>

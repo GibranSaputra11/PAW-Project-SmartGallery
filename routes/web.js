@@ -4,6 +4,7 @@ const publicController = require('../controllers/publicController');
 const router = express.Router();
 
 router.get('/', publicController.getHome);
+router.get('/paket', publicController.getPackages);
 router.get('/paket/:id', publicController.getPackageDetail);
 router.get('/gallery', publicController.getGallery);
 

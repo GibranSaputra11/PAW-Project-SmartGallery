@@ -4,11 +4,13 @@ const { Op } = require('sequelize');
 exports.getHome = async (req, res) => {
   try {
     const packages = await db.Package.findAll({ 
-      order: [['category', 'ASC'], ['price', 'ASC']] 
+      order: [['popular', 'DESC'], ['category', 'ASC'], ['price', 'ASC']] 
     });
+    const popularPackages = packages.filter(p => p.popular);
+    const otherPackages = packages.filter(p => !p.popular);
     const galleries = await db.Gallery.findAll({ 
       order: [['createdAt', 'DESC']],
-      limit: 12
+      limit: 3
     });
     const testimonials = await db.Testimonial.findAll({ 
       order: [['createdAt', 'DESC']],
@@ -18,6 +20,8 @@ exports.getHome = async (req, res) => {
     res.render('index', {
       title: 'Smart Gallery - Pricelist & Portofolio Fotografi',
       namaAplikasi: 'Smart Gallery',
+      popularPackages,
+      otherPackages,
       packages,
       galleries,
       testimonials,
@@ -27,6 +31,34 @@ exports.getHome = async (req, res) => {
     });
   } catch (error) {
     console.error('Home error:', error);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.getPackages = async (req, res) => {
+  try {
+    const { category } = req.query;
+    let where = {};
+    
+    if (category && category !== 'Semua') {
+      where.category = category;
+    }
+    
+    const packages = await db.Package.findAll({ 
+      where,
+      order: [['popular', 'DESC'], ['category', 'ASC'], ['price', 'ASC']] 
+    });
+    const categories = ['Semua', 'Wisuda', 'Prewedding', 'Wedding', 'Add-on'];
+    
+    res.render('packages', {
+      title: 'Semua Paket Layanan - Smart Gallery',
+      namaAplikasi: 'Smart Gallery',
+      packages,
+      selectedCategory: category || 'Semua',
+      categories
+    });
+  } catch (error) {
+    console.error('Packages error:', error);
     res.status(500).send('Server error');
   }
 };
@@ -71,7 +103,7 @@ exports.getGallery = async (req, res) => {
       namaAplikasi: 'Smart Gallery',
       galleries,
       selectedCategory: category || 'Semua',
-      categories: ['Semua', 'Wisuda', 'Prewedding', 'Wedding']
+      categories: ['Semua', 'Wisuda', 'Prewedding', 'Wedding', 'Lainnya']
     });
   } catch (error) {
     console.error('Gallery error:', error);
