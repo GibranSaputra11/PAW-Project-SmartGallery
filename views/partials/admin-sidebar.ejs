@@ -1,0 +1,162 @@
+<% 
+const currentPath = typeof req !== 'undefined' ? req.path : '';
+const activeMenu = (path) => currentPath.startsWith(path) ? 'active' : '';
+%>
+
+<aside class="fixed inset-y-0 left-0 z-50 w-[240px] bg-alabaster border-r border-hairline transform transition-transform duration-300 lg:translate-x-0 -translate-x-full" id="admin-sidebar" aria-label="Navigasi Admin">
+  <div class="flex flex-col h-full">
+    <!-- Sidebar Header / Brand -->
+    <div class="p-6 border-b border-hairline flex items-center gap-2">
+      <svg class="w-8 h-8 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+      <span class="font-display text-xl tracking-wider text-ink">SMART</span>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto" aria-label="Menu Utama Admin">
+      <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all <%= activeMenu('/admin/dashboard') %> <%= activeMenu('/admin') && !currentPath.includes('/gallery') && !currentPath.includes('/pricing') && !currentPath.includes('/testimonials') && !currentPath.includes('/faqs') ? 'active' : '' %>"
+         <%= activeMenu('/admin/dashboard') || (activeMenu('/admin') && !currentPath.includes('/gallery') && !currentPath.includes('/pricing') && !currentPath.includes('/testimonials') && !currentPath.includes('/faqs')) ? 'aria-current="page"' : '' %>>
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="/admin/gallery" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all <%= activeMenu('/admin/gallery') %>"
+         <%= activeMenu('/admin/gallery') ? 'aria-current="page"' : '' %>>
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span>Kelola Galeri</span>
+      </a>
+
+      <a href="/admin/pricing" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all <%= activeMenu('/admin/pricing') %>"
+         <%= activeMenu('/admin/pricing') ? 'aria-current="page"' : '' %>>
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"></path></svg>
+        <span>Paket & Harga</span>
+      </a>
+
+      <a href="/admin/testimonials" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all <%= activeMenu('/admin/testimonials') %>"
+         <%= activeMenu('/admin/testimonials') ? 'aria-current="page"' : '' %>>
+        <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.690h3.462c.969 0 1.371 1.24.588 1.810l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.690l1.07-3.292z"/></svg>
+        <span>Kelola Testimoni</span>
+      </a>
+
+      <a href="/admin/faqs" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all <%= activeMenu('/admin/faqs') %>"
+         <%= activeMenu('/admin/faqs') ? 'aria-current="page"' : '' %>>
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Kelola FAQ</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer / Logout -->
+    <div class="p-4 border-t border-hairline">
+      <form action="/auth/logout" method="POST">
+        <button type="submit" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-muted hover:text-ink hover:bg-stone transition-all">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+          <span>Keluar</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="fixed inset-0 z-40 bg-ink/50 hidden lg:hidden" id="sidebar-overlay" aria-hidden="true"></div>
+
+<!-- Mobile Top Navigation (Horizontal Tabs) -->
+<header class="lg:hidden sticky top-0 z-50 bg-milk border-b border-hairline">
+  <div class="flex items-center justify-between h-14 px-4">
+    <button type="button" id="sidebar-toggle" class="p-2 text-ink hover:bg-stone transition-colors" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="admin-sidebar">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    </button>
+    <div class="flex items-center gap-2 flex-1 justify-center">
+      <svg class="w-6 h-6 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      <span class="font-display text-lg tracking-wider text-ink">SMART</span>
+    </div>
+    <form action="/auth/logout" method="POST" class="flex-1 flex justify-end">
+      <button type="submit" class="p-2 text-muted hover:text-ink" aria-label="Keluar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+      </button>
+    </form>
+  </div>
+  
+  <!-- Horizontal Tabs on Mobile -->
+  <nav class="overflow-x-auto px-4 pb-4 -mx-4" aria-label="Navigasi Mobile">
+    <div class="flex gap-2 min-w-max">
+      <a href="/admin/dashboard" class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all <%= activeMenu('/admin/dashboard') %> <%= activeMenu('/admin') && !currentPath.includes('/gallery') && !currentPath.includes('/pricing') && !currentPath.includes('/testimonials') && !currentPath.includes('/faqs') ? 'active' : '' %>"
+         <%= activeMenu('/admin/dashboard') || (activeMenu('/admin') && !currentPath.includes('/gallery') && !currentPath.includes('/pricing') && !currentPath.includes('/testimonials') && !currentPath.includes('/faqs')) ? 'aria-current="page"' : '' %>>
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="/admin/gallery" class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all <%= activeMenu('/admin/gallery') %>"
+         <%= activeMenu('/admin/gallery') ? 'aria-current="page"' : '' %>>
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span>Galeri</span>
+      </a>
+      <a href="/admin/pricing" class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all <%= activeMenu('/admin/pricing') %>"
+         <%= activeMenu('/admin/pricing') ? 'aria-current="page"' : '' %>>
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"></path></svg>
+        <span>Paket</span>
+      </a>
+      <a href="/admin/testimonials" class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all <%= activeMenu('/admin/testimonials') %>"
+         <%= activeMenu('/admin/testimonials') ? 'aria-current="page"' : '' %>>
+        <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.690h3.462c.969 0 1.371 1.24.588 1.810l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.690l1.07-3.292z"/></svg>
+        <span>Testimoni</span>
+      </a>
+      <a href="/admin/faqs" class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all <%= activeMenu('/admin/faqs') %>"
+         <%= activeMenu('/admin/faqs') ? 'aria-current="page"' : '' %>>
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>FAQ</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+(function() {
+  const sidebar = document.getElementById('admin-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const toggle = document.getElementById('sidebar-toggle');
+  
+  if (!sidebar || !overlay || !toggle) return;
+
+  function openSidebar() {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+    overlay.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', function() {
+    if (sidebar.classList.contains('-translate-x-full')) {
+      openSidebar();
+    } else {
+      closeSidebar();
+    }
+  });
+
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close sidebar on navigation link click (mobile)
+  sidebar.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth < 1024) closeSidebar();
+    });
+  });
+
+  // Close sidebar on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
+      closeSidebar();
+    }
+  });
+})();
+</script>

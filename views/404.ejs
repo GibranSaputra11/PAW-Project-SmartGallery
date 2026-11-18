@@ -1,31 +1,41 @@
 <%- include('partials/head', { title: '404 - Smart Gallery' }) %>
 
-<body class="bg-street text-paper min-h-screen flex items-center justify-center px-4 selection:bg-accent selection:text-street">
+<main class="bg-ivory text-ink min-h-screen w-full flex flex-col items-center justify-center px-4 py-12 selection:bg-ink selection:text-milk">
 
-  <div class="text-center">
-    <a href="/" class="inline-flex items-center gap-2 group mb-8">
-      <svg class="w-12 h-12 text-accent group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-      </svg>
-      <span class="font-display text-4xl tracking-wider text-paper">SMART</span>
-    </a>
-    <span class="font-script text-accent text-3xl -ml-10 -mt-2">Gallery</span>
+  <div class="w-full max-w-[480px] mx-auto">
+    <div class="bg-milk border border-hairline p-10 sm:p-12 text-center">
 
-    <div class="mt-12">
-      <h1 class="text-9xl font-display text-accent/20 tracking-wider">404</h1>
-      <h2 class="text-3xl font-semibold text-paper mt-4 mb-4">Halaman Tidak Ditemukan</h2>
-      <p class="text-muted text-lg max-w-md mx-auto mb-10">Maaf, halaman yang Anda cari tidak ada atau sudah dipindahkan.</p>
-      
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/" class="bg-accent hover:bg-accent/90 text-street font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-accent/20">
-          Kembali ke Beranda
+      <div class="mb-8">
+        <a href="/" class="inline-flex items-center gap-2 group mb-2">
+          <svg class="w-10 h-10 text-ink group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <span class="font-display text-2xl tracking-wider text-ink">SMART</span>
         </a>
-        <a href="/gallery" class="bg-cardbg hover:bg-slate-800 text-paper font-semibold px-8 py-4 rounded-xl border border-slate-800 transition-all">
-          Lihat Portofolio
-        </a>
+        <span class="font-script text-muted text-xl -ml-6 -mt-2 block">Gallery</span>
       </div>
+
+      <div class="pt-6 border-t border-hairline">
+        <p class="text-8xl sm:text-9xl font-display text-ink/15 tracking-widest leading-none select-none">404</p>
+        <h1 class="text-2xl font-display uppercase tracking-wide text-ink mt-4">Halaman Tidak Ditemukan</h1>
+        <p class="text-muted text-xs sm:text-sm max-w-sm mx-auto mt-3 mb-8 leading-relaxed">
+          Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="/" class="w-full sm:w-auto bg-ink hover:bg-charcoal text-milk font-semibold px-6 py-3.5 text-xs uppercase tracking-wider border border-ink transition-colors">
+            Kembali ke Beranda
+          </a>
+          <a href="/gallery" class="w-full sm:w-auto bg-alabaster hover:bg-stone text-ink font-semibold px-6 py-3.5 text-xs uppercase tracking-wider border border-hairline transition-colors">
+            Lihat Portofolio
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
+
+</main>
 
 <%- include('partials/footer') %>

@@ -6,7 +6,7 @@
   <title><%= typeof title !== 'undefined' ? title : 'Smart Gallery' %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,16 +14,25 @@
       theme: {
         extend: {
           colors: {
-            street: '#0D0D0D',
-            accent: '#FFA800',
-            paper: '#FFFFFF',
-            muted: '#A0A0A0',
-            cardbg: '#1C1C1E',
+            ivory: '#F7F5F0',
+            milk: '#FCFBF9',
+            alabaster: '#F0EDE6',
+            stone: '#E5E2DC',
+            cement: '#D6D2C9',
+            hairline: '#BDB9AF',
+            numeral: '#A39F96',
+            muted: '#5E5B55',
+            ink: '#121212',
+            charcoal: '#292929',
+            street: '#121212',
+            cardbg: '#FCFBF9',
+            paper: '#121212',
             wa: '#25D366'
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Anton', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
             script: ['Caveat', 'cursive']
           }
         }
@@ -31,10 +40,26 @@
     }
   </script>
   <style>
+    :root {
+      --bg-canvas-ivory: #F7F5F0;
+      --surface-milk: #FCFBF9;
+      --surface-alabaster: #F0EDE6;
+      --surface-stone: #E5E2DC;
+      --surface-cement: #D6D2C9;
+      --border-hairline: #BDB9AF;
+      --text-numeral: #A39F96;
+      --text-secondary: #5E5B55;
+      --ink-primary: #121212;
+      --ink-hover: #292929;
+      --radius-strict: 0px;
+    }
+    *, *::before, *::after {
+      border-radius: var(--radius-strict) !important;
+    }
     body {
-      background-color: #0D0D0D;
-      color: #FFFFFF;
-      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-canvas-ivory);
+      color: var(--ink-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
   </style>
 </head>
